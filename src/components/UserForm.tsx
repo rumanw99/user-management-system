@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
-import { TextField, Button } from "@mui/material";
+import { TextField, Grid } from "@mui/material";
 import * as Yup from "yup";
 import { User } from "../types";
 
@@ -16,7 +16,7 @@ const validationSchema = Yup.object({
     .email("Invalid email address")
     .required("Email is required"),
   phone: Yup.string().required("Phone is required"),
-  website: Yup.string().required("Website is required"),
+  website: Yup.string().url("Invalid URL").required("Website is required"),
 });
 
 const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit }) => {
@@ -27,43 +27,62 @@ const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit }) => {
       onSubmit={onSubmit}
     >
       {({ errors, touched }) => (
-        <Form>
-          <Field
-            as={TextField}
-            name="name"
-            label="Name"
-            error={touched.name && Boolean(errors.name)}
-            helperText={touched.name && errors.name}
-          />
-          <Field
-            as={TextField}
-            name="username"
-            label="Username"
-            error={touched.username && Boolean(errors.username)}
-            helperText={touched.username && errors.username}
-          />
-          <Field
-            as={TextField}
-            name="email"
-            label="Email"
-            error={touched.email && Boolean(errors.email)}
-            helperText={touched.email && errors.email}
-          />
-          <Field
-            as={TextField}
-            name="phone"
-            label="Phone"
-            error={touched.phone && Boolean(errors.phone)}
-            helperText={touched.phone && errors.phone}
-          />
-          <Field
-            as={TextField}
-            name="website"
-            label="Website"
-            error={touched.website && Boolean(errors.website)}
-            helperText={touched.website && errors.website}
-          />
-          <Button type="submit">Submit</Button>
+        <Form style={{ paddingTop: "8px" }} id="user-form">
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Field
+                as={TextField}
+                name="name"
+                label="Name"
+                fullWidth
+                error={touched.name && Boolean(errors.name)}
+                helperText={touched.name && errors.name}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Field
+                as={TextField}
+                name="username"
+                label="Username"
+                fullWidth
+                error={touched.username && Boolean(errors.username)}
+                helperText={touched.username && errors.username}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Field
+                as={TextField}
+                name="email"
+                label="Email"
+                type="email"
+                fullWidth
+                error={touched.email && Boolean(errors.email)}
+                helperText={touched.email && errors.email}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Field
+                as={TextField}
+                name="phone"
+                label="Phone"
+                type="tel"
+                fullWidth
+                error={touched.phone && Boolean(errors.phone)}
+                helperText={touched.phone && errors.phone}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Field
+                as={TextField}
+                name="website"
+                label="Website"
+                type="url"
+                fullWidth
+                error={touched.website && Boolean(errors.website)}
+                helperText={touched.website && errors.website}
+              />
+            </Grid>
+          </Grid>
         </Form>
       )}
     </Formik>

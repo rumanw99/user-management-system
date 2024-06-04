@@ -18,12 +18,16 @@ class ApiProvider {
       function (response) {
         return response;
       },
-      function ({ response }: AxiosError<{ error: { message: string } }>) {
-        toast(response?.data?.error?.message, {
+      function (error: AxiosError<{ error: { message: string } }>) {
+        const errorMessage =
+          error.response?.data?.error?.message ||
+          error.message ||
+          "An unknown error occurred";
+        toast(errorMessage, {
           type: "error",
           position: "top-center",
         });
-        return Promise.reject(response);
+        return Promise.reject(error);
       }
     );
   }

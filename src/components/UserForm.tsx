@@ -16,7 +16,12 @@ const validationSchema = Yup.object({
     .email("Invalid email address")
     .required("Email is required"),
   phone: Yup.string().required("Phone is required"),
-  website: Yup.string().url("Invalid URL").required("Website is required"),
+  website: Yup.string()
+    .matches(
+      /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+      "Invalid URL, for example: ambrose.net"
+    )
+    .required("Website is required"),
 });
 
 const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit }) => {
@@ -76,7 +81,7 @@ const UserForm: React.FC<UserFormProps> = ({ initialValues, onSubmit }) => {
                 as={TextField}
                 name="website"
                 label="Website"
-                type="url"
+                type="string"
                 fullWidth
                 error={touched.website && Boolean(errors.website)}
                 helperText={touched.website && errors.website}

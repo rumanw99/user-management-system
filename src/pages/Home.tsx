@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import { UserTable, UserForm } from "../components";
+import { UserTable } from "../components";
 import useUsers from "../hooks/useUsers";
 import { User } from "../types";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import UserDialog from "../components/UserDialog";
 
 const Home: React.FC = () => {
   const { users, loading, addUser, updateUser, deleteUser } = useUsers();
@@ -66,37 +58,12 @@ const Home: React.FC = () => {
       </Stack>
 
       <UserTable users={users} onEdit={handleEdit} onDelete={handleDelete} />
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>{editingUser ? "Edit User" : "Add User"}</DialogTitle>
-        <DialogContent>
-          <UserForm
-            initialValues={
-              editingUser || {
-                id: 0,
-                name: "",
-                username: "",
-                email: "",
-                phone: "",
-                website: "",
-              }
-            }
-            onSubmit={handleFormSubmit}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            form="user-form"
-            variant="contained"
-            color="primary"
-          >
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <UserDialog
+        open={open}
+        editingUser={editingUser}
+        onClose={handleClose}
+        onSubmit={handleFormSubmit}
+      />
     </Box>
   );
 };
